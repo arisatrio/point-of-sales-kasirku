@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>@yield('title')</title>
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
@@ -44,10 +44,10 @@
                         </a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-chart-pie mr-2"></i>Laporan</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-shopping-cart mr-2"></i>Penjualan</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-plus mr-2"></i>Pembelian</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('produk') }}"><i class="fas fa-cubes mr-2"></i>Produk</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('member') }}"><i class="fas fa-users mr-2"></i>Member</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-percent mr-2"></i>Promo dan Diskon</a>
                     </div>
                 </div>
                 <div id="page-content-wrapper" class="bg-light">
