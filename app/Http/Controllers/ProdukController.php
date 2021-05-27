@@ -3,85 +3,113 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
+use App\Models\Produk;
 use App\Models\Kategori;
 
 class ProdukController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $kategori = Kategori::all();
+        $produk = Produk::with('kategori')->get();
 
-        return view('produk', compact('kategori'));
+        return view('produk', compact('produk', 'kategori'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'kode_produk'   => 'required|unique:produks',
+            'nama_produk'   => 'required',
+            'kategori_id'   => 'required',
+            'harga'         => 'required|numeric',
+            'deskripsi'     => 'required',
+            'foto'          => 'required',
+            'stok'          => 'required|numeric'
+        ]);
+
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto'    => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+
+            $image              = $request->file('foto');
+            $imageName          = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath    = public_path('/img/produk');
+            $image->move($destinationPath, $imageName);
+        }
+
+        $produk = Produk::create([
+            'user_id'       => auth()->user()->id,
+            'kode_produk'   => $data['kode_produk'],
+            'nama_produk'   => $data['nama_produk'],
+            'kategori_id'   => $data['kategori_id'],
+            'harga'         => $data['harga'],
+            'stok'          => $data['stok'],
+            'deskripsi'     => $data['deskripsi'],
+            'foto'          => $imageName
+        ]);
+
+        return redirect('/produk')->with('messages', 'Data berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $produk = Produk::find($id);
+        $kategori = Kategori::all();
+
+        return view('produk-edit', compact('produk', 'kategori'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $produk = Produk::find($id);
+
+        if ($request->hasFile('foto')) {
+            $data = $request->validate([
+                'kode_produk'   => 'required',
+                'nama_produk'   => 'required',
+                'kategori_id'   => 'required',
+                'harga'         => 'required|numeric',
+                'deskripsi'     => 'required',
+                'stok'          => 'required|numeric',
+                'foto'          => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            ]);
+
+            $image              = $request->file('foto');
+            $imageName          = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath    = public_path('/img/produk');
+            $image->move($destinationPath, $imageName);
+            $produk->foto       = $imageName;
+        } else {
+            $data = $request->validate([
+                'kode_produk'   => 'required',
+                'nama_produk'   => 'required',
+                'kategori_id'   => 'required',
+                'harga'         => 'required|numeric',
+                'deskripsi'     => 'required',
+                'stok'          => 'required|numeric'
+            ]);
+        }
+
+        $produk->update([
+            'kode_produk'   => $data['kode_produk'],
+            'nama_produk'   => $data['nama_produk'],
+            'kategori_id'   => $data['kategori_id'],
+            'harga'         => $data['harga'],
+            'stok'          => $data['stok'],
+            'deskripsi'     => $data['deskripsi'],
+        ]);
+
+        return redirect('/produk')->with('messages', "Data berhasil diperbaharui.");
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $produk = Produk::find($id);
+        $produk->delete();
+
+        return redirect('/produk')->with('messages', 'Data berhasil dihapus.');
     }
 }

@@ -16,4 +16,9 @@ class Kategori extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function produk()
+    {
+        return $this->hasMany('App\Models\Produk');
+    }
 }

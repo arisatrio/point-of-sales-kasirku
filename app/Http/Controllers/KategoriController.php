@@ -7,21 +7,11 @@ use App\Models\Kategori;
 
 class KategoriController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $kategori = Kategori::all();
 
         return view('kategori', compact('kategori'));
-    }
-
-    public function create()
-    {
-        //
     }
 
     public function store(Request $request)
@@ -37,51 +27,38 @@ class KategoriController extends Controller
             'kategori'  => $data['kategori']
         ]);
 
-        return redirect('/kategori');
+        return redirect('/kategori')->with('messages', 'Data berhasil ditambahkan.');;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $kategori = Kategori::find($id);
+
+        return view('kategori-edit', compact('kategori'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'kode'      => 'required',
+            'kategori'  => 'required'
+        ]);
+
+        $kategori = Kategori::find($id);
+        $kategori->update([
+            'kode'      => $data['kode'],
+            'kategori'  => $data['kategori']
+        ]);
+
+        return redirect('/kategori')->with('messages', 'Data berhasil diperbaharui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $kategori = Kategori::find($id);
+        $kategori->delete();
+
+        return redirect('/kategori')->with('messages', 'Data berhasil dihapus.');
     }
 }

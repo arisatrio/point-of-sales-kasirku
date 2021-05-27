@@ -10,7 +10,7 @@ class Produk extends Model
         'user_id',
         'kode_produk',
         'nama_produk',
-        'kategori',
+        'kategori_id',
         'harga',
         'deskripsi',
         'foto',
@@ -20,5 +20,10 @@ class Produk extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function kategori()
+    {
+        return $this->belongsTo('App\Models\Kategori', 'kategori_id');
     }
 }

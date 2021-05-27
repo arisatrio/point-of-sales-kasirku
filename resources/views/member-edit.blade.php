@@ -1,8 +1,15 @@
 @extends('layouts/app')
 
-@section('title', 'Nama Toko')
+@section('title', 'Data Member | Kasirku')
 
 @section('content')
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('member') }}">Member</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Data Member</li>
+    </ol>
+</nav>
 <div class="row mb-4">
     <div class="col-6">
         <div class="card shadow">

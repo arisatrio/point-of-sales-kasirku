@@ -1,64 +1,77 @@
 @extends('layouts/app')
 
-@section('title', 'Nama Toko')
+@section('title', 'Data Kategori')
 
 @section('content')
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Data Kategori</li>
+    </ol>
+</nav>
 <div class="row mb-4">
-    <div class="col-8">
-        <div class="card shadow">
-            <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col">
-                        <h1>Tambah Kategori</h1>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <form method="POST" action="{{ route('kategori-post') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Kode</label>
-                                <input type="text" class="form-control" name="kode">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleInputEmail1">Nama Kategori</label>
-                                <input type="text" class="form-control" name="kategori">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="col">
         <div class="card shadow">
             <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col text-center">
-                        <h2>Dashboard</h2>
+                <div class="row mb-4">
+                    <div class="col">
+                        <h1>Data Kategori</h1>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-success float-right" data-toggle="modal" data-target="#exampleModal">
+                            <i class="fas fa-plus"></i>
+                            Tambah Kategori
+                        </button>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card bg-primary">
-                            <div class="text-center text-white p-2">
-                                <h6>Total Kategori</h6>
-                                <h2 class="font-weight-bold">{{ $kategori->count() }}</h2>
+                @if (session('messages'))
+                <div class="alert alert-success alert-dismissible">
+                    {{ session('messages') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Tambah Member</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
+                            <form method="POST" action="{{ route('kategori-post') }}">
+                                @csrf
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label for="inputEmail3">Kode</label>
+                                        <input type="text" class="form-control" name="kode">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputPassword3">Nama Kategori</label>
+                                        <input type="text" class="form-control" name="kategori">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                    <button type="submit" class="btn btn-primary">Tambah</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row mb-4">
-    <div class="col">
-        <div class="card shadow">
-            <div class="card-body">
-                <h1>Data Kategori</h1>
-                <div class="row">
+                <div class="row">  
                     <div class="col">
                         <table id="example" class="table table-bordered" style="width:100%">
                             <thead>
@@ -79,8 +92,14 @@
                                     <td>{{ $item->kode }}</td>
                                     <td>{{ $item->kategori }}</td>
                                     <td>
-                                        <a href=""><i class="text-muted fas fa-pencil-alt"></i></a>
-                                        <a href="" class="text-muted"><i class="fas fa-trash"></i></a>
+                                        <a href="{{ route('kategori-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt ml-2 mr-3"></i></a>
+                                        <button>
+                                            <form method="POST" action="{{ route('kategori-delete', $item->id) }}">
+                                                @csrf
+                                                @method("DELETE")
+                                                <button type="submit"><i class="fas fa-trash text-muted"></i></button>
+                                            </form>
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach
