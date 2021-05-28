@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             'user_id' => 1,
             'kode_produk' => 001,
             'nama_produk' => Str::random(10),
-            'kategori' => "Lainnya",
+            'kategori_id' => "2",
             'harga' => '20.000',
             'deskripsi' => Str::random(20),
             'foto'  => "default.jpg",

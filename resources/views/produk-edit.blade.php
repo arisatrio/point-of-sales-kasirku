@@ -37,7 +37,7 @@
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3">Nama Produk</label>
-                            <input type="text" class="form-control" name="nama_produk" value="{{ $produk->nama_produk }}">
+                            <input type="text" class="form-control" name="nama_produk" value="{{ $produk->nama_produk }}" maxlength="40">
                         </div>
                         <div class="form-group">
                             <label for="exampleFormControlSelect1">Kategori</label>

@@ -39,15 +39,16 @@
                     <img class="sidebar-heading img-fluid" src="{{ asset('img/logo.png') }}" style="height: 200px; width: 250px;">
                     <div class="list-group list-group-flush">
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                            <i class="fas fa-tachometer-alt mr-2"></i>
+                            <i class="fas fa-th-large mr-2"></i>
                             Transaksi
                         </a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-chart-pie mr-2"></i>Laporan</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-shopping-cart mr-2"></i>Penjualan</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('penjualan') }}"><i class="fas fa-shopping-cart mr-2"></i>Penjualan</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('produk') }}"><i class="fas fa-cubes mr-2"></i>Produk</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('member') }}"><i class="fas fa-users mr-2"></i>Member</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-percent mr-2"></i>Promo dan Diskon</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-user mr-2"></i>Pegawai</a>
                     </div>
                 </div>
                 <div id="page-content-wrapper" class="bg-light">
@@ -58,9 +59,49 @@
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
-                                    <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
-                                        <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
-                                    </button>
+                                    <x-jet-dropdown align="right" width="48">
+                                        <x-slot name="trigger">
+                                            @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
+                                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition duration-150 ease-in-out">
+                                                    <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
+                                                </button>
+                                            @else
+                                                <span class="inline-flex rounded-md">
+                                                    <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                                        {{ Auth::user()->name }}
+                
+                                                        <svg class="ml-2 -mr-0.5 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            @endif
+                                        </x-slot>
+                
+                                        <x-slot name="content">
+                                            <!-- Account Management -->
+                                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                                {{ __('Kelola Akun') }}
+                                            </div>
+                
+                                            <x-jet-dropdown-link href="{{ route('profile.show') }}">
+                                                {{ __('Profil Toko') }}
+                                            </x-jet-dropdown-link>
+                
+                                            <div class="border-t border-gray-100"></div>
+                
+                                            <!-- Authentication -->
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                
+                                                <x-jet-dropdown-link href="{{ route('logout') }}"
+                                                         onclick="event.preventDefault();
+                                                                this.closest('form').submit();">
+                                                    {{ __('Keluar') }}
+                                                </x-jet-dropdown-link>
+                                            </form>
+                                        </x-slot>
+                                    </x-jet-dropdown>
                                 </ul>
                             </div>
                         </div>

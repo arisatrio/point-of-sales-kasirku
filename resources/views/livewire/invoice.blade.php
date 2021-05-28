@@ -7,41 +7,40 @@
             <div class="col">
                 <div class="form-group">
                     <select class="form-control" id="exampleFormControlSelect1">
-                        <option>Yanto</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                        @foreach ($member as $item)
+                        <option @if($item->nama === 'Umur') selected @endif value="{{ $item->id }}">{{ $item->nama }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
-            <div class="col-2 float-left">
-                <button><i class="fas fa-plus-circle mt-1 fa-2x float-left"></i></button>
-            </div>
         </div>
         <hr>
-        <div class="row" style="height: 320px;">
+        <div class="row overflow-auto" style="height: 320px;">
             <div class="col">
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
-                        <th scope="col">Nama Produk</th>
+                    <tr >
+                        <th scope="col" >Nama Produk</th>
                         <th scope="col">Harga</th>
                         <th scope="col" style="width:5%">Qty</th>
                         <th scope="col">Subtotal</th>
+                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                @isset($this->item['nama_produk'])
-                                {{ $this->item['nama_produk'] }}
-                                @endisset
-                            </td>
-                            <td>Mark</td>
-                            <td>{{ $qty }}</td>
-                            <td>@mdo</td>
-                        </tr>
+                        @foreach ($cart['produk'] as $item)
+                            <tr>
+                                <td>{{ $item['nama_produk'] }}</td>
+                                <td>{{ number_format($item['harga']) }}</td>
+                                <td>{{ $item['qty'] }}</td>
+                                <td>{{ number_format($item['subtotal']) }}</td>
+                                <td>
+                                    <button wire:click="removeItem({{ $item['id'] }})" class="text-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -49,12 +48,12 @@
         <hr>
         <div class="row">
             <div class="col">
-                <p>Total Item</p>
+                <p>Total Produk</p>
                 <p>Total</p>
             </div>
             <div class="col text-right">
-                <p>10</p>
-                <p>10.000</p>
+                <p>{{ $cartTotal }}</p>
+                <p>Rp{{ number_format($grandTotal) }}</p>
             </div>
         </div>
         <div class="row font-weight-bold bg-light">
@@ -62,7 +61,7 @@
                 <p class="">Total Pembayaran</p>
             </div>
             <div class="col text-right">
-                <p>10.000</p>
+                <p>Rp{{ number_format($grandTotal) }}</p>
             </div>
         </div>
         <div class="row text-center">
@@ -73,7 +72,7 @@
             </div>
             <div class="col">
                 <div class="bg-success">
-                    <a href="" class="btn btn-lg btn-success">Bayar</a>
+                    <button href="" class="btn btn-lg btn-success">Bayar</button>
                 </div>
             </div>
         </div>

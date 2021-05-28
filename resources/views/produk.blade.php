@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Nama Produk</label>
-                                        <input type="text" class="form-control" name="nama_produk">
+                                        <input type="text" class="form-control" name="nama_produk" maxlength="40" placeholder="Maksimal 40 karakter">
                                     </div>
                                     <div class="form-group">
                                         <label for="exampleFormControlSelect1">Kategori</label>
@@ -121,7 +121,7 @@
                                     <td>{{ $item->kode_produk }}</td>
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->kategori->kategori }}</td>
-                                    <td>Rp{{ $item->harga }}</td>
+                                    <td>Rp{{ number_format($item->harga) }}</td>
                                     <td>{{ $item->stok }}</td>
                                     <td>
                                         <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt ml-2 mr-3"></i></a>

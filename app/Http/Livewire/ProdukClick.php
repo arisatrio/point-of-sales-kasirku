@@ -2,25 +2,24 @@
 
 namespace App\Http\Livewire;
 
+use App\Facades\Cart;
+
 use Livewire\Component;
 use App\Models\Produk;
 
 class ProdukClick extends Component
 {
-    public $item;
-    public $produk;
-    public $qty = 0;
-    public $qtyCount;
-
     public function Add($id)
     {
-        $produk = Produk::find($id);
-        $this->produk = $produk;
-        $this->emit('tambahProduk', $produk->id);
+        Cart::add(Produk::where('id', $id)->first());
+
+        $this->emit('Added');
     }
 
     public function render()
     {
-        return view('livewire.produk-click');
+        $produk = Produk::paginate(15);
+
+        return view('livewire.produk-click', compact('produk'));
     }
 }
