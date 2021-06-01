@@ -9,7 +9,8 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::all();
+        $user = auth()->user()->id;
+        $kategori = Kategori::has('user', $user)->get();
 
         return view('kategori', compact('kategori'));
     }

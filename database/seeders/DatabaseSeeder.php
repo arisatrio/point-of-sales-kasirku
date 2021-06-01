@@ -15,16 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-        DB::table('produks')->insert([
-            'user_id' => 1,
-            'kode_produk' => 001,
-            'nama_produk' => Str::random(10),
-            'kategori_id' => "2",
-            'harga' => '20.000',
-            'deskripsi' => Str::random(20),
-            'foto'  => "default.jpg",
-            'stok'  => 100
-        ]);
+        //$this->call(PesananSeeder::class);
+        // DB::table('kategori_usaha')->insert([
+        //     'kategori_usaha' => "Lainnya",
+        // ]);
     }
 }

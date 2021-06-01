@@ -17,11 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/soal-satu', function () {
-    return view('soal-satu');
-});
-Route::post('/output-satu', [App\Http\Controllers\FrontController::class, 'soalSatu'])->name('soal-satu');
-Route::post('/output-satu-b', [App\Http\Controllers\FrontController::class, 'soalSatuB'])->name('soal-satu-b');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('dashboard');

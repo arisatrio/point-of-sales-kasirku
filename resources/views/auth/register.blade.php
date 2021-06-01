@@ -12,20 +12,6 @@
                 <img class="mb-3 center-block" src="{{ asset('img/logo.png') }}" />
                 <hr>
             </div>
-
-            <div>
-                <x-jet-label for="nama_usaha" value="{{ __('Nama Usaha') }}" />
-                <x-jet-input id="nama_usaha" class="block mt-1 w-full" type="text" name="nama_usaha" :value="old('nama_usaha')" required autofocus autocomplete="nama_usaha" />
-            </div>
-            <div class="mt-4">
-                <x-jet-label for="kategori_usaha" value="{{ __('Kategori Usaha') }}" />
-                @livewire('kategori-usaha')
-            </div>
-
-            <div class="text-center m-4">
-                <hr>
-            </div>
-
             <div>
                 <x-jet-label for="name" value="{{ __('Nama Pemilik') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />

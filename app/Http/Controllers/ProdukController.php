@@ -11,8 +11,9 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        $kategori = Kategori::all();
-        $produk = Produk::with('kategori')->get();
+        $user = auth()->user()->id;
+        $kategori = Kategori::has('user', $user)->get();
+        $produk = Produk::with('kategori')->has('user', $user)->get();
 
         return view('produk', compact('produk', 'kategori'));
     }

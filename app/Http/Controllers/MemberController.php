@@ -11,7 +11,8 @@ class MemberController extends Controller
 {
     public function index()
     {
-        $member = Member::all();
+        $user = auth()->user()->id;
+        $member = Member::has('user', $user)->get();
         return view('member', compact('member'));
     }
 

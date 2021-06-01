@@ -30,7 +30,7 @@
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased" id="body">
         <x-jet-banner />
 
             {{-- @livewire('navigation-menu') --}}
@@ -47,7 +47,6 @@
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('produk') }}"><i class="fas fa-cubes mr-2"></i>Produk</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('member') }}"><i class="fas fa-users mr-2"></i>Member</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-percent mr-2"></i>Promo dan Diskon</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-user mr-2"></i>Pegawai</a>
                     </div>
                 </div>
@@ -59,6 +58,21 @@
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                                 <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                    <li>
+                                        <button onclick="openFullscreen()" class="btn " id="fullscreen"><i class="fas fa-expand-arrows-alt"></i></button>
+                                        <script>
+                                            var elem = document.getElementById("body");
+                                            function openFullscreen() {
+                                                if (elem.requestFullscreen) {
+                                                    elem.requestFullscreen();
+                                                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                                                    elem.webkitRequestFullscreen();
+                                                } else if (elem.msRequestFullscreen) { /* IE11 */
+                                                    elem.msRequestFullscreen();
+                                                }
+                                            }
+                                            </script>
+                                    </li>
                                     <x-jet-dropdown align="right" width="48">
                                         <x-slot name="trigger">
                                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
