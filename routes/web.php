@@ -17,11 +17,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/cek', function () {
+    return view('invoice-bayar');
+});
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('dashboard');
     //
     Route::get('/penjualan', [App\Http\Controllers\PenjualanController::class, 'index'])->name('penjualan');
+    Route::post('/penjualan/post', [App\Http\Controllers\PenjualanController::class, 'store'])->name('penjualan-post');
     Route::get('/penjualan/edit', [App\Http\Controllers\PenjualanController::class, 'edit'])->name('penjualan-edit');
     //
     Route::get('/produk', [App\Http\Controllers\ProdukController::class, 'index'])->name('produk');

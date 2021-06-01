@@ -13,14 +13,15 @@ class Invoice extends Component
     public $cartTotal = 0;
     public $qty = 0;
     public $subtotal = 0;
-
     public $grandTotal;
-
     public $cart;
+    public $uang = 0;
+    public $kembalian = 0;
 
     protected $listeners = [
         'Added' => 'UpdateCart',
-        'productRemoved'    => 'UpdateCart'
+        'productRemoved'    => 'UpdateCart',
+        'clear' => 'UpdateCart'
     ];
 
     public function mount()
@@ -34,8 +35,6 @@ class Invoice extends Component
         $this->cart = Cart::get();
 
         $this->qty = $this->qty + 1;
-        //dd(Cart::get());
-        //$this->subtotal = $this->qty * Cart::get()['produk', 'harga'];
     }
 
     public function removeItem($id)
@@ -48,11 +47,34 @@ class Invoice extends Component
         $this->emit('produkRemoved');
     }
 
+    public function setUangPas($uang)
+    {
+        $this->uang = $uang;
+    }
+
+    public function setUangNull()
+    {
+        $this->uang = 0;
+    }
+
+    public function setUang($uang)
+    {
+        $this->uang = $this->uang + $uang;
+    }
+
+    public function checkout()
+    {
+        Cart::clear();
+        $this->cart = Cart::get();
+        $this->emit('clear');
+    }
+
     public function render()
     {
         $this->cartTotal = count(Cart::get()['produk']);
         $key = 'subtotal';
         $this->grandTotal   = array_sum(array_column($this->cart['produk'], $key));
+        $this->kembalian =  $this->uang - $this->grandTotal;
 
         $member = Member::all();
         return view('livewire.invoice', compact('member'));

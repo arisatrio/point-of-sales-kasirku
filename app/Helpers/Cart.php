@@ -55,6 +55,11 @@ class Cart
         $this->set($cart);
     }
 
+    public function clear()
+    {
+        $this->set($this->empty());
+    }
+
     public function empty()
     {
         return [

@@ -50,8 +50,6 @@
                                     <th scope="col">Kode Transaksi</th>
                                     <th scope="col">Tanggal</th>
                                     <th scope="col">Customer</th>
-                                    <th scope="col">Total</th>
-                                    <th scope="col">Diskon</th>
                                     <th scope="col">Grand Total</th>
                                     <th scope="col">Status</th>
                                     <th scope="col" style="width: 5%;">Handle</th>
@@ -61,14 +59,14 @@
                                 @php
                                     $no = 1
                                 @endphp
-                                {{-- @foreach ($produk as $item)
+                                @foreach ($penjualan as $item)
                                 <tr>
                                     <td>{{ $no++ }}</td>
-                                    <td>{{ $item->kode_produk }}</td>
-                                    <td>{{ $item->nama_produk }}</td>
-                                    <td>{{ $item->kategori->kategori }}</td>
-                                    <td>Rp{{ $item->harga }}</td>
-                                    <td>{{ $item->stok }}</td>
+                                    <td>{{ $item->kode }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>{{ $item->member->nama }}</td>
+                                    <td>Rp{{ number_format($item->grand_total) }}</td>
+                                    <td>{{ $item->status }}</td>
                                     <td>
                                         <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt ml-2 mr-3"></i></a>
                                         <button>
@@ -80,7 +78,7 @@
                                         </button>
                                     </td>
                                 </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                         <script>

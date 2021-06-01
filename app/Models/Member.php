@@ -20,4 +20,9 @@ class Member extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function penjualan()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }

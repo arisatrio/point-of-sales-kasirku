@@ -3,33 +3,84 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\DB;
+
+use App\Models\Penjualan;
+use App\Models\PenjualanProduk;
 
 class PenjualanController extends Controller
 {
     public function index()
     {
-        return view('penjualan');
+        $penjualan = Penjualan::has('user')->with('member', 'penjualanProduk')->get();
+        //dd($penjualan);
+
+        return view('penjualan', compact('penjualan'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function get_transaction_id()
     {
-        //
+        $id = Penjualan::query()
+            ->where('kode', 'like', 'T' . date('ymd') . '%')
+            ->selectRaw('max(substring(kode,8))+1 as kode');
+
+        if ($id->count() > 0) {
+
+            $id = 'T' . date('ymd') . sprintf("%04d", $id->first()->kode);
+            //echo json_encode(['status'=>'success','message'=>$id]);
+            return $id;
+        } else {
+            $id = 'T' . date('ymd') . '0001';
+            //echo json_encode(['status'=>'success','message'=>$id]);
+
+            return $id;
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $produk = json_decode($request->cart, TRUE);
+        //dd($this->get_transaction_id());
+
+        try {
+            DB::beginTransaction();
+
+            $penjualan = Penjualan::create([
+                'user_id'       => auth()->user()->id,
+                'member_id'     => $request->member_id,
+                'kode'          => $this->get_transaction_id(),
+                'grand_total'   => $request->grand_total,
+                'jumlah_bayar'  => $request->jumlah_bayar,
+                'status'        => $request->status
+            ]);
+            $penjualan->save();
+
+
+            $iterasi = count($produk);
+            $insert = [];
+            for ($i = 0; $i < $iterasi; $i++) {
+                $insert = [
+                    'penjualan_id'  => $penjualan->id,
+                    'user_id'       => $penjualan->user_id,
+                    'produk_id'     => $produk[$i]['id'],
+                    'qty'           => $produk[$i]['qty'],
+                    'total'         => $produk[$i]['subtotal']
+                ];
+                PenjualanProduk::insert($insert);
+            };
+
+            //print_r($insert);
+            //dd($insert);
+
+            //PenjualanProduk::insert($insert);
+            DB::commit();
+
+            return redirect()->back();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', $e);
+        };
     }
 
     /**

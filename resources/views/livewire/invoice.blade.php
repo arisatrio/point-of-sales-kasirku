@@ -1,3 +1,5 @@
+<form method="POST" action="{{ route('penjualan-post') }}">
+@csrf
 <div class="card shadow" style="height: 650px;">
     <div class="card-body">
         <div class="row">
@@ -6,7 +8,7 @@
             </div>
             <div class="col">
                 <div class="form-group">
-                    <select class="form-control" id="exampleFormControlSelect1">
+                    <select class="form-control" id="exampleFormControlSelect1" name="member_id">
                         @foreach ($member as $item)
                         <option @if($item->nama === 'Umur') selected @endif value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
@@ -15,14 +17,14 @@
             </div>
         </div>
         <hr>
-        <div class="row overflow-auto" style="height: 320px;">
+        <div class="row" style="height: 350px; overflow-y: scroll;">
             <div class="col">
                 <table class="table table-bordered">
                     <thead>
                     <tr >
                         <th scope="col" >Nama Produk</th>
+                        <th scope="col" style="width:10%">Qty</th>
                         <th scope="col">Harga</th>
-                        <th scope="col" style="width:5%">Qty</th>
                         <th scope="col">Subtotal</th>
                         <th scope="col"></th>
                     </tr>
@@ -31,11 +33,11 @@
                         @foreach ($cart['produk'] as $item)
                             <tr>
                                 <td>{{ $item['nama_produk'] }}</td>
-                                <td>{{ number_format($item['harga']) }}</td>
                                 <td>{{ $item['qty'] }}</td>
+                                <td>{{ number_format($item['harga']) }}</td>
                                 <td>{{ number_format($item['subtotal']) }}</td>
                                 <td>
-                                    <button wire:click="removeItem({{ $item['id'] }})" class="text-danger">
+                                    <button type="button" wire:click="removeItem({{ $item['id'] }})" class="text-danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </td>
@@ -46,35 +48,138 @@
             </div>
         </div>
         <hr>
+        {{-- @php
+            dd($cart['produk']['0'])
+        @endphp --}}
         <div class="row">
             <div class="col">
                 <p>Total Produk</p>
-                <p>Total</p>
             </div>
             <div class="col text-right">
-                <p>{{ $cartTotal }}</p>
-                <p>Rp{{ number_format($grandTotal) }}</p>
+                <p>{{ $cartTotal }} 
+                    ( @php $sum = 0;
+                        foreach ($cart['produk'] as $item) {
+                            $sum += $item['qty'];
+                        } 
+                        echo $sum
+                    @endphp )
+                </p>
+                <input name="grand_total" type="hidden" value="{{ $grandTotal }}">
             </div>
         </div>
-        <div class="row font-weight-bold bg-light">
+        <div class="row font-weight-bold bg-light mb-2">
             <div class="col">
-                <p class="">Total Pembayaran</p>
+                <p class="">Total</p>
             </div>
             <div class="col text-right">
                 <p>Rp{{ number_format($grandTotal) }}</p>
             </div>
         </div>
+
+        <input name="jumlah_bayar" type="hidden" value="1000">
+        <input name="status" type="hidden" value="OKE">
+        <input name="cart" type="hidden" value="{{ json_encode($cart['produk'], TRUE) }}">
+
         <div class="row text-center">
-            <div class="col ">
-                <div class="bg-danger">
-                    <a href="" class="btn btn-lg btn-danger">Batal</a>
-                </div>
-            </div>
-            <div class="col">
-                <div class="bg-success">
-                    <button href="" class="btn btn-lg btn-success">Bayar</button>
+            <button wire:click="checkout()" type="submit" class="col btn btn-lg btn-danger mr-1">Batal</button>
+            <button type="button" class="col btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal">
+                Bayar
+            </button>
+            <!-- Modal -->
+            <div wire:ignore.self class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Pembayaran</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST" action="{{ route('kategori-post') }}">
+                            @csrf
+                            <div class="modal-body text-left">
+                                <div class="row mb-2">
+                                    <div class="col-2">
+                                        <button type="button" wire:click="setUangPas({{ $grandTotal }})" class="btn btn-primary">UANG PAS</button>
+                                    </div>
+                                    <div class="col-10">
+                                        <input type="text" name="uang" class="form-control" placeholder="Nominal" value="{{ number_format($uang) }}">
+                                    </div>
+                                </div>
+                                <div class="row text-center">
+                                    <div class="col ">
+                                        <button type="button" wire:click="setUang({{ 100000 }})" class="btn btn-outline-primary">100.000</button>
+                                        <button type="button" wire:click="setUang({{ 50000 }})" class=" btn btn-outline-primary">50.000</button>
+                                        <button type="button" wire:click="setUang({{ 20000 }})" class=" btn btn-outline-primary">20.000</button>
+                                        <button type="button" wire:click="setUang({{ 10000 }})" class=" btn btn-outline-primary">10.000</button>
+                                        <button type="button" wire:click="setUang({{ 5000 }})" class=" btn btn-outline-primary">5.000</button>
+                                        <button type="button" wire:click="setUangNull()" class=" btn btn-danger"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col text-left">
+                                        <p>Total Produk</p>
+                                        <p>Total</p>
+                                    </div>
+                                    <div class="col text-right">
+                                        <p>{{ $cartTotal }}
+                                            ( @php $sum = 0;
+                                                foreach ($cart['produk'] as $item) {
+                                                    $sum += $item['qty'];
+                                                } 
+                                                echo $sum
+                                            @endphp )
+                                        </p>
+                                        <p>Rp{{ number_format($grandTotal) }}</p>
+                                        <input name="grand_total" type="hidden" value="{{ $grandTotal }}">
+                                    </div>
+                                </div>
+                                <div class="row font-weight-bold bg-light">
+                                    <div class="col text-left">
+                                        <p>Total Pembayaran</p>
+                                    </div>
+                                    <div class="col text-right">
+                                        <p>Rp{{ number_format($uang) }}</p>
+                                    </div>
+                                </div>
+                                <div class="row font-weight-bold bg-light">
+                                    <div class="col text-left">
+                                        <p>Kembalian</p>
+                                    </div>
+                                    <div class="col text-right">
+                                        <p>Rp{{ number_format($kembalian) }}</p>
+                                    </div>
+                                </div>
+                                @if ($kembalian < 0) <div class="alert alert-danger">Nominal uang Pembayaran kurang dari Total Bayar!.</div @endif
+                                <hr>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="exampleFormControlTextarea1">Catatan</label>
+                                            <textarea class="form-control" name="catatan" rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label>Status Pembayaran</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" value="Lunas" @if ($kembalian >= 0) checked @endif>
+                                    <label class="form-check-label" for="status">LUNAS</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="status" value="Belum Lunas" @if ($kembalian < 0) checked @endif>
+                                    <label class="form-check-label" for="status">BELUM LUNAS</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</form>
