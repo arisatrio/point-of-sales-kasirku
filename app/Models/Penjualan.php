@@ -14,6 +14,8 @@ class Penjualan extends Model
         'kode',
         'grand_total',
         'jumlah_bayar',
+        'kembalian',
+        'catatan',
         'status'
     ];
 

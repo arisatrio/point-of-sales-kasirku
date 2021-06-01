@@ -76,8 +76,6 @@
             </div>
         </div>
 
-        <input name="jumlah_bayar" type="hidden" value="1000">
-        <input name="status" type="hidden" value="OKE">
         <input name="cart" type="hidden" value="{{ json_encode($cart['produk'], TRUE) }}">
 
         <div class="row text-center">
@@ -95,15 +93,13 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form method="POST" action="{{ route('kategori-post') }}">
-                            @csrf
                             <div class="modal-body text-left">
                                 <div class="row mb-2">
                                     <div class="col-2">
                                         <button type="button" wire:click="setUangPas({{ $grandTotal }})" class="btn btn-primary">UANG PAS</button>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" name="uang" class="form-control" placeholder="Nominal" value="{{ number_format($uang) }}">
+                                        <input type="text" name="jumlah_bayar" class="form-control" placeholder="Nominal" value="{{ number_format($uang) }}">
                                     </div>
                                 </div>
                                 <div class="row text-center">
@@ -151,7 +147,9 @@
                                         <p>Rp{{ number_format($kembalian) }}</p>
                                     </div>
                                 </div>
-                                @if ($kembalian < 0) <div class="alert alert-danger">Nominal uang Pembayaran kurang dari Total Bayar!.</div @endif
+                                <input type="hidden" name="grand_total" value="{{ $grandTotal }}">
+                                <input type="hidden" name="kembalian" value="{{ $kembalian }}">
+                                @if ($kembalian < 0) <div class="alert alert-danger">Nominal uang Pembayaran kurang dari Total Bayar!.</div> @endif
                                 <hr>
                                 <div class="row">
                                     <div class="col">
@@ -175,7 +173,6 @@
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                                 <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
-                        </form>
                     </div>
                 </div>
             </div>

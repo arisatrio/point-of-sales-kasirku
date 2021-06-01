@@ -20,6 +20,8 @@ class CreatePenjualansTable extends Migration
             $table->string('kode');
             $table->integer('grand_total');
             $table->integer('jumlah_bayar');
+            $table->integer('kembalian');
+            $table->string('catatan')->nullable();
             $table->string('status');
             $table->timestamps();
         });

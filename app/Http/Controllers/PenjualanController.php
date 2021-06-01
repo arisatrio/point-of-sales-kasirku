@@ -52,6 +52,8 @@ class PenjualanController extends Controller
                 'kode'          => $this->get_transaction_id(),
                 'grand_total'   => $request->grand_total,
                 'jumlah_bayar'  => $request->jumlah_bayar,
+                'kembalian'     => $request->kembalian,
+                'catatan'       => $request->catatan,
                 'status'        => $request->status
             ]);
             $penjualan->save();
@@ -76,22 +78,18 @@ class PenjualanController extends Controller
             //PenjualanProduk::insert($insert);
             DB::commit();
 
-            return redirect()->back();
+            return redirect()->route('penjualan-detail', $penjualan->id);
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', $e);
         };
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        $penjualan = Penjualan::find($id);
+
+        return view('penjualan-detail', $penjualan);
     }
 
     /**
