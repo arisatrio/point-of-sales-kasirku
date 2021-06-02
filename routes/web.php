@@ -44,4 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/member/edit/{id}', [App\Http\Controllers\MemberController::class, 'edit'])->name('member-edit');
     Route::post('/member/edit/post/{id}', [App\Http\Controllers\MemberController::class, 'update'])->name('member-edit-post');
     Route::delete('/member/delete/{id}', [App\Http\Controllers\MemberController::class, 'destroy'])->name('member-delete');
+    //
+    Route::get('/pegawai', [App\Http\Controllers\PegawaiController::class, 'index'])->name('pegawai');
+    Route::post('/pegawai/post', [App\Http\Controllers\PegawaiController::class, 'store'])->name('pegawai-store');
 });

@@ -47,7 +47,7 @@
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('produk') }}"><i class="fas fa-cubes mr-2"></i>Produk</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('member') }}"><i class="fas fa-users mr-2"></i>Member</a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-user mr-2"></i>Pegawai</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('pegawai') }}"><i class="fas fa-cash-register mr-2"></i>Kasir</a>
                     </div>
                 </div>
                 <div id="page-content-wrapper" class="bg-light">

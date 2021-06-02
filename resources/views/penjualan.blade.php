@@ -69,7 +69,7 @@
                                     <td @if ($item->status !== "Lunas") class="text-white bg-danger" @else class="text-white bg-success" @endif>{{ $item->status }}</td>
                                     <td>
                                         <a href="{{ route('penjualan-detail', $item->id) }}"><i class="text-muted fas fa-eye mr-2"></i></a>
-                                        <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt mr-2"></i></a>
+                                        <a href=""><i class="text-muted fas fa-pencil-alt mr-2"></i></a>
                                         <button>
                                             <form method="POST" action="{{ route('produk-delete', $item->id) }}">
                                                 @csrf
