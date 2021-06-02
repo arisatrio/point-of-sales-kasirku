@@ -52,7 +52,7 @@
                                     <th scope="col">Customer</th>
                                     <th scope="col">Grand Total</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col" style="width: 5%;">Handle</th>
+                                    <th scope="col" style="width: 10%;">Handle</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,9 +66,10 @@
                                     <td>{{ $item->created_at }}</td>
                                     <td>{{ $item->member->nama }}</td>
                                     <td>Rp{{ number_format($item->grand_total) }}</td>
-                                    <td>{{ $item->status }}</td>
+                                    <td @if ($item->status !== "Lunas") class="text-white bg-danger" @else class="text-white bg-success" @endif>{{ $item->status }}</td>
                                     <td>
-                                        <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt ml-2 mr-3"></i></a>
+                                        <a href="{{ route('penjualan-detail', $item->id) }}"><i class="text-muted fas fa-eye mr-2"></i></a>
+                                        <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt mr-2"></i></a>
                                         <button>
                                             <form method="POST" action="{{ route('produk-delete', $item->id) }}">
                                                 @csrf

@@ -75,11 +75,8 @@
                 <p>Rp{{ number_format($grandTotal) }}</p>
             </div>
         </div>
-
-        <input name="cart" type="hidden" value="{{ json_encode($cart['produk'], TRUE) }}">
-
         <div class="row text-center">
-            <button wire:click="checkout()" type="submit" class="col btn btn-lg btn-danger mr-1">Batal</button>
+            <button wire:click="checkout()" type="button" class="col btn btn-lg btn-danger mr-1">Batal</button>
             <button type="button" class="col btn btn-lg btn-success" data-toggle="modal" data-target="#exampleModal">
                 Bayar
             </button>
@@ -99,7 +96,7 @@
                                         <button type="button" wire:click="setUangPas({{ $grandTotal }})" class="btn btn-primary">UANG PAS</button>
                                     </div>
                                     <div class="col-10">
-                                        <input type="text" name="jumlah_bayar" class="form-control" placeholder="Nominal" value="{{ number_format($uang) }}">
+                                        <input type="text" name="jumlah_bayar" class="form-control" placeholder="Nominal" value="{{ $uang }}">
                                     </div>
                                 </div>
                                 <div class="row text-center">
@@ -128,7 +125,6 @@
                                             @endphp )
                                         </p>
                                         <p>Rp{{ number_format($grandTotal) }}</p>
-                                        <input name="grand_total" type="hidden" value="{{ $grandTotal }}">
                                     </div>
                                 </div>
                                 <div class="row font-weight-bold bg-light">
@@ -169,9 +165,10 @@
                                     <label class="form-check-label" for="status">BELUM LUNAS</label>
                                 </div>
                             </div>
+                            <input name="cart" type="hidden" value="{{ json_encode($cart['produk'], TRUE) }}">
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                                <button type="submit" class="btn btn-success">Simpan</button>
+                                <button wire:click="checkout()"  type="submit" class="btn btn-success">Simpan</button>
                             </div>
                     </div>
                 </div>

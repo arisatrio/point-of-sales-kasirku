@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 use App\Models\Penjualan;
 use App\Models\PenjualanProduk;
+use App\Helpers\Cart;
 
 class PenjualanController extends Controller
 {
@@ -41,7 +42,7 @@ class PenjualanController extends Controller
     public function store(Request $request)
     {
         $produk = json_decode($request->cart, TRUE);
-        //dd($this->get_transaction_id());
+        //dd($request->all());
 
         try {
             DB::beginTransaction();
@@ -58,7 +59,6 @@ class PenjualanController extends Controller
             ]);
             $penjualan->save();
 
-
             $iterasi = count($produk);
             $insert = [];
             for ($i = 0; $i < $iterasi; $i++) {
@@ -71,25 +71,21 @@ class PenjualanController extends Controller
                 ];
                 PenjualanProduk::insert($insert);
             };
-
-            //print_r($insert);
-            //dd($insert);
-
-            //PenjualanProduk::insert($insert);
             DB::commit();
 
             return redirect()->route('penjualan-detail', $penjualan->id);
-        } catch (\Exception $e) {
+        } catch (\Exception $error) {
             DB::rollback();
-            return redirect()->back()->with('error', $e);
+            return redirect()->back()->with('error', $error);
         };
     }
 
     public function show($id)
     {
-        $penjualan = Penjualan::find($id);
+        $penjualan = Penjualan::has('user')->with('penjualanProduk')->find($id);
+        $produkPenj = PenjualanProduk::with('produk')->where('penjualan_id', $penjualan->id)->get();
 
-        return view('penjualan-detail', $penjualan);
+        return view('penjualan-detail', compact('penjualan', 'produkPenj'));
     }
 
     /**
