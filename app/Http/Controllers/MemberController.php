@@ -16,6 +16,25 @@ class MemberController extends Controller
         return view('member', compact('member'));
     }
 
+    public function get_member_id()
+    {
+        $id = Member::query()
+            ->where('id_member', 'like', 'ID' . date('ymd') . '%')
+            ->selectRaw('max(substring(id_member,8))+1 as id_member');
+
+        if ($id->count() > 0) {
+
+            $id = 'ID' . date('ymd') . sprintf("%04d", $id->first()->id_member);
+            //echo json_encode(['status'=>'success','message'=>$id]);
+            return $id;
+        } else {
+            $id = 'ID' . date('ymd') . '0001';
+            //echo json_encode(['status'=>'success','message'=>$id]);
+
+            return $id;
+        }
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -24,17 +43,15 @@ class MemberController extends Controller
             'alamat'    => 'required'
         ]);
 
-        $tgl = Carbon::now()->format('dmY');
-        $last = Member::orderByDesc('created_at')->first();
-        $id = (int)$last->id;
-
         $member = Member::create([
             'user_id'   => auth()->user()->id,
-            'id_member'    => 'ID.' . $tgl . '.' . '00' . ($id + 1),
+            'id_member'    => $this->get_member_id(),
             'nama'      => $data['nama'],
             'nohp'      => $data['nohp'],
             'alamat'    => $data['alamat']
         ]);
+
+        $member->save();
 
         return redirect('/member')->with('messages', 'Data berhasil ditambahkan.');
     }

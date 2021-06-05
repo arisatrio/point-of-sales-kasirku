@@ -17,6 +17,25 @@
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 
+            <!-- Jenis Usaha -->
+            <div class="mt-4">
+                @livewire('jenis-usaha')
+            </div>
+            
+            <!-- Alamat Toko -->
+            <div class="mt-4">
+                <x-jet-label for="alamat_toko" value="{{ __('Alamat Toko') }}" />
+                <x-jet-input name="alamat_toko" type="text" class="mt-1 block w-full" wire:model.defer="state.alamat_toko" required autocomplete="alamat_toko" />
+                <x-jet-input-error for="alamat_toko" class="mt-2" />
+            </div>
+
+            <!-- No Telepon -->
+            <div class="mt-4">
+                <x-jet-label for="nohp" value="{{ __('No Telepon') }}" />
+                <x-jet-input name="nohp" type="text" class="mt-1 block w-full" wire:model.defer="state.nohp" required autocomplete="nohp" />
+                <x-jet-input-error for="nohp" class="mt-2" />
+            </div>
+
             <div class="mt-4">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />

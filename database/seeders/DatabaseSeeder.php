@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //$this->call(PesananSeeder::class);
-        // DB::table('kategori_usaha')->insert([
-        //     'kategori_usaha' => "Lainnya",
-        // ]);
+        DB::table('kategori_usaha')->insert([
+            'kategori_usaha' => "Kesehatan dan Kecantikan",
+        ]);
     }
 }

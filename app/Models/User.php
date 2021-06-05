@@ -24,13 +24,19 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nama_usaha',
-        'kategori_usaha',
         'name',
-        'nohp',
         'email',
+        'user_id',
+        'jenis_usaha',
+        'alamat_toko',
+        'nohp',
         'password',
     ];
+
+    public function kategoriUsaha()
+    {
+        return $this->hasOne('App\Models\KategoriUsaha');
+    }
 
     public function produk()
     {

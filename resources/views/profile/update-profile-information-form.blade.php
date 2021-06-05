@@ -61,23 +61,27 @@
 
         <!-- Jenis Usaha -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="" value="{{ __('Jenis Usaha') }}" />
-            <x-jet-input id="" type="text" class="mt-1 block w-full" wire:model.defer="state." autocomplete="" />
-            <x-jet-input-error for="" class="mt-2" />
+            <x-jet-label for="jenis_usaha" value="{{ __('Jenis Usaha') }}" />
+            <select class="form-control" name="jenis_usaha" wire:model.defer="state.jenis_usaha" autocomplete="jenis_usaha">
+                <option disabled>--Pilih Jenis Usaha--</option>
+                @foreach ($data as $item)
+                <option value="{{ $item->id }}">{{ $item->kategori_usaha }}</option>
+                @endforeach
+            </select>
         </div>
         
         <!-- Alamat Toko -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="" value="{{ __('Alamat Toko') }}" />
-            <x-jet-input id="" type="text" class="mt-1 block w-full" wire:model.defer="state." autocomplete="" />
-            <x-jet-input-error for="" class="mt-2" />
+            <x-jet-label for="alamat_toko" value="{{ __('Alamat Toko') }}" />
+            <x-jet-input id="alamat_toko" type="text" class="mt-1 block w-full" wire:model.defer="state.alamat_toko" autocomplete="alamat_toko" />
+            <x-jet-input-error for="alamat_toko" class="mt-2" />
         </div>
 
         <!-- No Telepon -->
         <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="" value="{{ __('No Telepon') }}" />
-            <x-jet-input id="" type="text" class="mt-1 block w-full" wire:model.defer="state." autocomplete="" />
-            <x-jet-input-error for="" class="mt-2" />
+            <x-jet-label for="nohp" value="{{ __('No Telepon') }}" />
+            <x-jet-input id="nohp" type="text" class="mt-1 block w-full" wire:model.defer="state.nohp" autocomplete="nohp" />
+            <x-jet-input-error for="nohp" class="mt-2" />
         </div>
 
         <!-- Email -->

@@ -97,7 +97,7 @@
                             </a>
                         </div>
                         <div class="row">
-                            <a href="{{ route('dashboard') }}" class="col-8 btn btn-success">
+                            <a href="{{ route('transaksi') }}" class="col-8 btn btn-success">
                                 <i class="fas fa-th-large mr-2"></i>
                                 KEMBALI KE POS
                             </a>

@@ -76,7 +76,7 @@ class PenjualanController extends Controller
             return redirect()->route('penjualan-detail', $penjualan->id);
         } catch (\Exception $error) {
             DB::rollback();
-            return redirect()->back()->with('error', $error);
+            return redirect()->back()->with('messages', $error);
         };
     }
 

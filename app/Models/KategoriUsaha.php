@@ -6,4 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class KategoriUsaha extends Model
 {
+    protected $table = 'kategori_usaha';
+    protected $fillable = [
+        'kategori_usaha'
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }

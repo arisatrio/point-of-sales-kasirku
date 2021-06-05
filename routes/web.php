@@ -20,7 +20,9 @@ Route::get('/', function () {
 
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('dashboard');
+    Route::get('/transaksi', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('transaksi');
+    //
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     //
     Route::get('/penjualan', [App\Http\Controllers\PenjualanController::class, 'index'])->name('penjualan');
     Route::post('/penjualan/post', [App\Http\Controllers\PenjualanController::class, 'store'])->name('penjualan-post');

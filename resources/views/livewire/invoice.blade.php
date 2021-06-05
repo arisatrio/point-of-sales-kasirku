@@ -9,8 +9,9 @@
             <div class="col">
                 <div class="form-group">
                     <select class="form-control" id="exampleFormControlSelect1" name="member_id">
+                        <option selected value="Umum">Umum</option>
                         @foreach ($member as $item)
-                        <option @if($item->nama === 'Umur') selected @endif value="{{ $item->id }}">{{ $item->nama }}</option>
+                        <option value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
                     </select>
                 </div>

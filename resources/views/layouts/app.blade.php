@@ -38,11 +38,11 @@
                 <div class="border-end bg-white" id="sidebar-wrapper">
                     <img class="sidebar-heading img-fluid" src="{{ asset('img/logo.png') }}" style="height: 200px; width: 250px;">
                     <div class="list-group list-group-flush">
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('transaksi') }}" :active="request()->routeIs('dashboard')">
                             <i class="fas fa-th-large mr-2"></i>
                             Transaksi
                         </a>
-                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"><i class="fas fa-chart-pie mr-2"></i>Laporan</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('dashboard') }}"><i class="fas fa-chart-pie mr-2"></i>Dashboard</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('penjualan') }}"><i class="fas fa-shopping-cart mr-2"></i>Penjualan</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('produk') }}"><i class="fas fa-cubes mr-2"></i>Produk</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori</a>
@@ -123,6 +123,9 @@
                     <!-- Page content-->
                     <div class="container-fluid mt-3">
                         @yield('content')
+                        @isset ($slot)
+                        {{ $slot }}
+                        @endisset
                     </div>
                     <!-- Page content-->
                 </div>
