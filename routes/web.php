@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 
 
-Route::group(['middleware' => 'auth:admin'], function () {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/transaksi', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('transaksi');
     //
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -56,7 +56,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
 Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin-login');
 Route::post('/admin/login/post', [App\Http\Controllers\AdminController::class, 'loginPost'])->name('admin-login-post');
 
-Route::group(['middleware' => 'auth:admin'], function () {
+Route::group(['middleware' => 'auth:web,admin'], function () {
+    Route::get('/admin/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('admin-logout');
     //KATEGORI
     Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin-dashboard');
     Route::get('/admin/kategori-usaha', [App\Http\Controllers\AdminController::class, 'index_kategori'])->name('admin-kategori');

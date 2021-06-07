@@ -31,13 +31,20 @@ class AdminController extends Controller
             'password'      => 'required'
         ]);
 
-        $user = Admin::where('email', $data['email'])->first();
-        if (!$user || !Hash::check($data['password'], $user->password)) {
-            return redirect()->back()->with('messages', "Email atau Password salah.!");
-        }
-        Auth::attempt($data);
+        // $user = Admin::where('email', $data['email'])->first();
+        // if (!$user || !Hash::check($data['password'], $user->password)) {
+        //     return redirect()->back()->with('messages', "Email atau Password salah.!");
+        // }
+        if (Auth::guard('admin')->attempt($data)) {
+            return redirect()->route('admin-dashboard');
+        };
+        return redirect()->back()->with('messages', "Email atau Password salah.!");
+    }
 
-        return redirect()->route('admin-dashboard');
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
     }
 
     public function dashboard()
