@@ -4,13 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\Produk;
 use App\Models\KategoriUsaha;
 
 class AdminController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:admin')->except('logout');
+    // }
+
     public function login()
     {
         return view('admin.login');
@@ -18,6 +26,18 @@ class AdminController extends Controller
 
     public function loginPost(Request $request)
     {
+        $data = $request->validate([
+            'email'         => 'required',
+            'password'      => 'required'
+        ]);
+
+        $user = Admin::where('email', $data['email'])->first();
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return redirect()->back()->with('messages', "Email atau Password salah.!");
+        }
+        Auth::attempt($data);
+
+        return redirect()->route('admin-dashboard');
     }
 
     public function dashboard()

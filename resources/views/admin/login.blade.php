@@ -36,7 +36,8 @@
                 <div class="text-center m-4">
                     <h1>LOGIN ADMIN</h1>
                 </div>
-                <form method="POST" action="{{ route('login') }}">
+                <form method="POST" action="{{ route('admin-login-post') }}">
+                    @csrf
                     <div>
                         <x-jet-label for="email" value="{{ __('Email') }}" />
                         <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />

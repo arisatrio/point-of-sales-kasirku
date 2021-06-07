@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //$this->call(PesananSeeder::class);
-        DB::table('kategori_usaha')->insert([
-            'kategori_usaha' => "Kesehatan dan Kecantikan",
+        DB::table('admins')->insert([
+            'email' => "admin@email.com",
+            'password' => bcrypt('12345678')
         ]);
     }
 }

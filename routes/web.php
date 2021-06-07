@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 
 
-Route::group(['middleware' => 'auth'], function () {
+Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/transaksi', [App\Http\Controllers\FrontController::class, 'dashboard'])->name('transaksi');
     //
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
@@ -51,17 +51,20 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pegawai/post', [App\Http\Controllers\PegawaiController::class, 'store'])->name('pegawai-store');
 });
 
-Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin-login');
-Route::post('/admin/login/post', [App\Http\Controllers\AdminController::class, 'loginPots'])->name('admin-login-post');
 
-//middleware
-//KATEGORI
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin-dashboard');
-Route::get('/admin/kategori-usaha', [App\Http\Controllers\AdminController::class, 'index_kategori'])->name('admin-kategori');
-Route::post('/admin/kategori-usaha/post', [App\Http\Controllers\AdminController::class, 'store_kategori'])->name('admin-kategori-post');
-Route::get('/admin/kategori-usaha/edit/{id}', [App\Http\Controllers\AdminController::class, 'edit_kategori'])->name('admin-kategori-edit');
-Route::post('/admin/kategori-usaha/update/{id}', [App\Http\Controllers\AdminController::class, 'update_kategori'])->name('admin-kategori-update');
-Route::delete('/admin/kategori-usaha/delete/{id}', [App\Http\Controllers\AdminController::class, 'destroy_kategori'])->name('admin-kategori-delete');
-//USER
-Route::get('/admin/user', [App\Http\Controllers\AdminController::class, 'index_user'])->name('admin-user');
-Route::post('/admin/user/post', [App\Http\Controllers\AdminController::class, 'store_user'])->name('admin-user-post');
+
+Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin-login');
+Route::post('/admin/login/post', [App\Http\Controllers\AdminController::class, 'loginPost'])->name('admin-login-post');
+
+Route::group(['middleware' => 'auth:admin'], function () {
+    //KATEGORI
+    Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin-dashboard');
+    Route::get('/admin/kategori-usaha', [App\Http\Controllers\AdminController::class, 'index_kategori'])->name('admin-kategori');
+    Route::post('/admin/kategori-usaha/post', [App\Http\Controllers\AdminController::class, 'store_kategori'])->name('admin-kategori-post');
+    Route::get('/admin/kategori-usaha/edit/{id}', [App\Http\Controllers\AdminController::class, 'edit_kategori'])->name('admin-kategori-edit');
+    Route::post('/admin/kategori-usaha/update/{id}', [App\Http\Controllers\AdminController::class, 'update_kategori'])->name('admin-kategori-update');
+    Route::delete('/admin/kategori-usaha/delete/{id}', [App\Http\Controllers\AdminController::class, 'destroy_kategori'])->name('admin-kategori-delete');
+    //USER
+    Route::get('/admin/user', [App\Http\Controllers\AdminController::class, 'index_user'])->name('admin-user');
+    Route::post('/admin/user/post', [App\Http\Controllers\AdminController::class, 'store_user'])->name('admin-user-post');
+});
