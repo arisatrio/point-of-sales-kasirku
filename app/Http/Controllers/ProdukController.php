@@ -11,9 +11,8 @@ class ProdukController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->id;
-        $kategori = Kategori::has('user', $user)->get();
-        $produk = Produk::with('kategori')->has('user', $user)->get();
+        $kategori = Kategori::has('user')->where('user_id', auth()->user()->id)->get();
+        $produk = Produk::has('user')->where('user_id', auth()->user()->id)->with('kategori')->get();
 
         return view('produk', compact('produk', 'kategori'));
     }
@@ -24,10 +23,10 @@ class ProdukController extends Controller
             'kode_produk'   => 'required|unique:produks',
             'nama_produk'   => 'required',
             'kategori_id'   => 'required',
-            'harga'         => 'required|numeric',
+            'harga'         => 'required|numeric|min:0|not_in:0',
             'deskripsi'     => 'required',
             'foto'          => 'required',
-            'stok'          => 'required|numeric'
+            'stok'          => 'required|numeric|min:0'
         ]);
 
         if ($request->hasFile('foto')) {

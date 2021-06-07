@@ -9,8 +9,7 @@ class KategoriController extends Controller
 {
     public function index()
     {
-        $user = auth()->user()->id;
-        $kategori = Kategori::has('user', $user)->get();
+        $kategori = Kategori::has('user', auth()->user()->id)->get();
 
         return view('kategori', compact('kategori'));
     }
@@ -28,7 +27,7 @@ class KategoriController extends Controller
             'kategori'  => $data['kategori']
         ]);
 
-        return redirect('/kategori')->with('messages', 'Data berhasil ditambahkan.');;
+        return redirect('/kategori')->with('messages', 'Data berhasil ditambahkan.');
     }
 
 

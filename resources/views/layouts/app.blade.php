@@ -32,8 +32,7 @@
     </head>
     <body class="font-sans antialiased" id="body">
         <x-jet-banner />
-
-            {{-- @livewire('navigation-menu') --}}
+        
             <div class="d-flex" id="wrapper">
                 <div class="border-end bg-white" id="sidebar-wrapper">
                     <img class="sidebar-heading img-fluid" src="{{ asset('img/logo.png') }}" style="height: 200px; width: 250px;">

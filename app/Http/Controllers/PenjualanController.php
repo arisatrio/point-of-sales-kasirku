@@ -14,7 +14,7 @@ class PenjualanController extends Controller
 {
     public function index()
     {
-        $penjualan = Penjualan::has('user')->with('member', 'penjualanProduk')->get();
+        $penjualan = Penjualan::has('user', auth()->user()->id)->with('member', 'penjualanProduk')->get();
         //dd($penjualan);
 
         return view('penjualan', compact('penjualan'));
@@ -42,7 +42,7 @@ class PenjualanController extends Controller
     public function store(Request $request)
     {
         $produk = json_decode($request->cart, TRUE);
-        //dd($request->all());
+        //dd($request->member_id);
 
         try {
             DB::beginTransaction();

@@ -23,9 +23,9 @@
                     <div class="card shadow text-center text-muted">
                         <div class="card-body">
                             <p>
-                                <b>{{ auth()->user()->nama_usaha }}</b>
+                                <b>{{ auth()->user()->name }}</b>
                                 <br>
-                                $alamat
+                                {{ auth()->user()->alamat_toko }}
                                 <br>
                                 {{ auth()->user()->nohp }}
                             </p>
@@ -44,7 +44,7 @@
                                 {{ $penjualan->created_at }}
                                 <br>
                                 <i class="fas fa-user mr-2"></i>
-                                {{ $penjualan->member->nama }} | {{ $penjualan->member->id_member }}
+                                @if ($penjualan->member != null) {{ $penjualan->member->nama }} | {{ $penjualan->member->id_member }} @endif Umum
                             </p>
                             <hr>
                             @foreach ($produkPenj as $item)

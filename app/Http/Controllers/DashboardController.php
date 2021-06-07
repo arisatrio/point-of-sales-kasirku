@@ -16,21 +16,51 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        //setlocale(LC_ALL, 'ID');
         $today = Carbon::today()->locale('id');
 
-        $lastMonth = Penjualan::has('user')->whereMonth('created_at', $today->subMonth()->format('m'))->whereYear('created_at', $today->format('Y'))->sum('grand_total');
-        $thisMonth = Penjualan::has('user')->whereMonth('created_at', $today->today()->format('m'))->whereYear('created_at', $today->format('Y'))->sum('grand_total');
-        $lastDay  = Penjualan::has('user')->whereDate('created_at', $today->yesterday())->sum('grand_total');
-        $thisDay   = Penjualan::has('user')->whereDate('created_at', $today->today())->sum('grand_total');
+        //CARD 1
+        $lastMonth = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->whereMonth('created_at', $today->subMonth()->format('m'))->whereYear('created_at', $today->format('Y'))->sum('grand_total');
+        $thisMonth = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->whereMonth('created_at', $today->today()->format('m'))->whereYear('created_at', $today->format('Y'))->sum('grand_total');
+        //CARD 2
+        $lastDay  = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->whereDate('created_at', $today->yesterday())->sum('grand_total');
+        $thisDay   = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->whereDate('created_at', $today->today())->sum('grand_total');
+        //CARD 3
+        $allTimeIncome      = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->sum('grand_total');
+        $firstMonth         = auth()->user()->created_at->format('F Y');
+        //CARD 4
+        $bestDay = Penjualan::has('user', auth()->user()->id)->where('status', "Lunas")->orderBy('grand_total', 'DESC')->pluck('grand_total');
+
+        $allTimeProduct     = PenjualanProduk::has('user', auth()->user()->id)->sum('qty');
+
+        $data = DB::table('penjualans')
+            ->where('user_id', auth()->user()->id)
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(grand_total) as total'))
+            ->groupBy('date')
+            ->orderBy('total', 'DESC')
+            ->first();
+
+        //dd($data);
+
+        $persentaseBulan    = $this->get_persentase_bulan($lastMonth, $thisMonth);
+        $persentaseHari     = $this->get_persentase_hari($lastDay, $thisMonth);
 
 
+        return view('dashboard', compact('today', 'thisMonth', 'thisDay', 'persentaseBulan', 'persentaseHari', 'allTimeIncome', 'allTimeProduct', 'data', 'firstMonth'));
+    }
+
+    public function get_persentase_bulan($lastMonth, $thisMonth)
+    {
         if ($lastMonth != 0) {
             $persentaseBulan = $thisMonth / $lastMonth * 100;
         } else {
             $persentaseBulan = 0;
         }
 
+        return $persentaseBulan;
+    }
+
+    public function get_persentase_hari($lastDay, $thisDay)
+    {
         if ($lastDay != 0) {
             $sisa = $thisDay - $lastDay;
             $persentaseHari = ($sisa / $lastDay) * 100;
@@ -38,6 +68,11 @@ class DashboardController extends Controller
             $persentaseHari = 0;
         }
 
+        return $persentaseHari;
+    }
+
+    public function get_grafik_utama($today)
+    {
         $firstDay = $today->startOfMonth()->toDateString();
         $lastDay = $today->endOfMonth()->toDateString();
         $period = CarbonPeriod::create($firstDay, $lastDay);
@@ -45,23 +80,23 @@ class DashboardController extends Controller
             $bulanIni[] = $item->format('d');
         }
 
-        $data = DB::table('penjualans')
-            ->where('user_id', auth()->user()->id)
-            ->get(['created_at', 'grand_total'])
-            ->groupBy(function ($date) {
-                return Carbon::parse($date->created_at)->format('d');
-            });
+        // $data = DB::table('penjualans')
+        //     ->where('user_id', auth()->user()->id)
+        //     ->get(['created_at', 'grand_total'])
+        //     ->groupBy(function ($date) {
+        //         return Carbon::parse($date->created_at)->format('d');
+        //     });
 
-        $data2 = Penjualan::select('grand_total')
-            ->where('user_id', auth()->user()->id)
-            ->whereDate('created_at', '>', $today->today()->subDays(30))
+        // $data2 = Penjualan::select('grand_total')
+        //     ->where('user_id', auth()->user()->id)
+        //     ->whereDate('created_at', '>', $today->today()->subDays(30))
 
-            ->pluck('grand_total');
+        //     ->pluck('grand_total');
         // ->groupBy(function ($date) {
         //     return Carbon::parse($date->created_at)->format('d');
         // });
 
-        //$penjualan = $data->toArray();
+        // $penjualan = $data->toArray();
 
 
 
@@ -70,10 +105,10 @@ class DashboardController extends Controller
         // $chart->dataset = (array_values($penjualan));
         // $data = $data->toArray();
         // $date = (array_keys($data));
-        //$data = (array_values($data));
+        // $data = (array_values($data));
 
-        //$new = (array_values($data2));
-        //dd($data->toArray());
+        // $new = (array_values($data2));
+        // dd($this->cardBoard());
 
         // $data = Penjualan::groupBy('date')
         //     ->get(array(
@@ -82,18 +117,5 @@ class DashboardController extends Controller
         //     ));
 
 
-        return view('dashboard', compact('today', 'thisMonth', 'thisDay', 'persentaseBulan', 'persentaseHari', 'data'));
     }
 }
-
-
-        // $firstDay = $today->startOfMonth()->toDateString();
-        // $lastDay = $today->endOfMonth()->toDateString();
-        // $period = CarbonPeriod::create($firstDay, $lastDay);
-        // foreach ($period as $item) {
-        //     $bulanIni[] = $item->format('d');
-        // }
-
-        // $penjualan = Penjualan::select('id', 'created_at')->get()->groupBy(function ($date) {
-        //     return Carbon::parse($date->created_at)->format('d'); // grouping by date
-        // });

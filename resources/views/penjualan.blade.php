@@ -64,7 +64,7 @@
                                     <td>{{ $no++ }}</td>
                                     <td>{{ $item->kode }}</td>
                                     <td>{{ $item->created_at }}</td>
-                                    <td>{{ $item->member->nama }}</td>
+                                    <td>@if ($item->member != null) {{ $item->member->nama }} @endif Umum</td>
                                     <td>Rp{{ number_format($item->grand_total) }}</td>
                                     <td @if ($item->status !== "Lunas") class="text-white bg-danger" @else class="text-white bg-success" @endif>{{ $item->status }}</td>
                                     <td>

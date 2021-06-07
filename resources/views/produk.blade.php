@@ -53,7 +53,12 @@
                             </div>
                             <form method="POST" action="{{ route('produk-post') }}" enctype="multipart/form-data">
                                 @csrf 
-                                <div class="modal-body">
+                                <div class="modal-body">                                    
+                                    @if($kategori == null)
+                                    <div class="alert alert-danger">
+                                        <p>Anda belum menambahkan Data Kategori!.</p>
+                                    </div>
+                                    @endif
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Kode</label>
                                         <input type="text" class="form-control" name="kode_produk">

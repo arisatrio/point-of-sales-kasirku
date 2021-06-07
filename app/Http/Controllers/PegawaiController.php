@@ -13,7 +13,7 @@ class PegawaiController extends Controller
     public function index()
     {
         $id = $this->get_id_pegawai();
-        $pegawai = Pegawai::has('user')->get();
+        $pegawai = Pegawai::has('user', auth()->user()->id)->get();
 
         return view('pegawai', compact('id', 'pegawai'));
     }

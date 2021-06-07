@@ -26,7 +26,6 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'user_id',
         'jenis_usaha',
         'alamat_toko',
         'nohp',
@@ -35,7 +34,7 @@ class User extends Authenticatable
 
     public function kategoriUsaha()
     {
-        return $this->hasOne('App\Models\KategoriUsaha');
+        return $this->hasOne('App\Models\KategoriUsaha', 'id');
     }
 
     public function produk()

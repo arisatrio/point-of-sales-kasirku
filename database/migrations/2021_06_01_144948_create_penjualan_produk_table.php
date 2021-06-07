@@ -15,9 +15,9 @@ class CreatePenjualanProdukTable extends Migration
     {
         Schema::create('penjualan_produk', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('penjualan_id');
-            $table->foreignId('user_id');
-            $table->foreignId('produk_id');
+            $table->foreignId('penjualan_id')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('produk_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('qty');
             $table->integer('total');
             $table->timestamps();

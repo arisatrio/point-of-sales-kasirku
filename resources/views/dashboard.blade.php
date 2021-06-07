@@ -25,10 +25,49 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
-                <div class="row">
+                <div class="row mb-4">
+                    <div class="col-3">
+                        <div class="card" style="border-top: 4px solid; border-top-color : rgb(0, 174, 255);">
+                            <div class="card-body" style="height: 135px">
+                                <div class="judul">
+                                    <span><b>Today</b> | {{ $today->today()->format('d F Y') }}</span>
+                                </div>
+                                <div class="isi">
+                                    <span>Rp</span>
+                                    <span style="font-size: 24pt">
+                                        <b>
+                                            @php
+                                            if ($thisDay < 1000000) {
+                                                $format = number_format($thisDay);
+                                            } else if ($thisDay < 1000000000) {
+                                                $format = number_format($thisDay / 1000000) . 'JT';
+                                            } else {
+                                                $format = number_format($thisDay / 1000000000, 2) . 'M';
+                                            }
+                                            echo $format
+                                            @endphp
+                                        </b>
+                                    </span>
+                                    <br>
+                                    <span class="text-muted"><small>vs {{ $today->yesterday()->format('d F Y') }}</small></span>
+                                    <span class="float-right">
+                                        @if ($persentaseHari == 0)
+                                            -
+                                        @elseif ($persentaseHari < 0)
+                                            {{ number_format($persentaseHari, 2) }}%
+                                            <i class="fas fa-arrow-alt-circle-down ml-1" style="color:red"></i>
+                                        @else
+                                            {{ number_format($persentaseHari, 2) }}%
+                                            <i class="fas fa-arrow-alt-circle-up ml-1" style="color:rgb(120, 201, 0)"></i>
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-3">
                         <div class="card" style="border-top: 4px solid; border-top-color : blue;">
-                            <div class="card-body">
+                            <div class="card-body" style="height: 135px">
                                 <div class="judul">
                                     <span><b>This Month</b> | {{ $today->today()->format('F Y') }}</span>
                                 </div>
@@ -66,70 +105,60 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <div class="card" style="border-top: 4px solid; border-top-color : orange;">
-                            <div class="card-body">
+                        <div class="card" style="border-top: 4px solid; border-top-color : rgb(0, 168, 160);">
+                            <div class="card-body" style="height: 135px">
                                 <div class="judul">
-                                    <span><b>Today</b> | {{ $today->today()->format('d F Y') }}</span>
+                                    <span><b>Best Day</b></span>
+                                </div>
+                                <div class="isi">
+                                    <span>Rp</span>
+                                    <span style="font-size: 24pt">
+                                        <b>
+                                            @isset($data)
+                                            @php
+                                            if ($data->total < 1000000) {
+                                                $format = number_format($data->total);
+                                            } else if ($data->total < 1000000000) {
+                                                $format = number_format($data->total / 1000000) . 'JT';
+                                            } else {
+                                                $format = number_format($data->total / 1000000000, 2) . 'M';
+                                            }
+                                            echo $format
+                                            @endphp
+                                            @endisset
+                                            -
+                                        </b>
+                                    </span>
+                                    <br>
+                                    <span class="text-muted"><small>@isset($data) {{ $data->date }} @endisset -</small></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card" style="border-top: 4px solid; border-top-color : orange;">
+                            <div class="card-body" style="height: 135px">
+                                <div class="judul">
+                                    <span><b>All Time Income</b></span>
                                 </div>
                                 <div class="isi">
                                     <span>Rp</span>
                                     <span style="font-size: 24pt">
                                         <b>
                                             @php
-                                            if ($thisDay < 1000000) {
-                                                $format = number_format($thisDay);
-                                            } else if ($thisDay < 1000000000) {
-                                                $format = number_format($thisDay / 1000000) . 'JT';
+                                            if ($allTimeIncome < 1000000) {
+                                                $format = number_format($allTimeIncome);
+                                            } else if ($allTimeIncome < 1000000000) {
+                                                $format = number_format($allTimeIncome / 1000000) . 'JT';
                                             } else {
-                                                $format = number_format($thisDay / 1000000000, 2) . 'M';
+                                                $format = number_format($allTimeIncome / 1000000000, 2) . 'M';
                                             }
                                             echo $format
                                             @endphp
                                         </b>
                                     </span>
                                     <br>
-                                    <span class="text-muted"><small>vs {{ $today->yesterday()->format('d F Y') }}</small></span>
-                                    <span class="float-right">
-                                        @if ($persentaseHari == 0)
-                                            -
-                                        @elseif ($persentaseHari < 0)
-                                            {{ number_format($persentaseHari, 2) }}%
-                                            <i class="fas fa-arrow-alt-circle-down ml-1" style="color:red"></i>
-                                        @else
-                                            {{ number_format($persentaseHari, 2) }}%
-                                            <i class="fas fa-arrow-alt-circle-up ml-1" style="color:rgb(120, 201, 0)"></i>
-                                        @endif
-                                        {{-- 30%
-                                        <i class="fas fa-arrow-alt-circle-down ml-1" style="color:red"></i> --}}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="card" style="border-top: 4px solid; border-top-color : rgb(0, 174, 255);">
-                            <div class="card-body">
-                                <div class="judul">
-                                    <span><b>Best Month</b></span>
-                                </div>
-                                <div class="isi">
-                                    <span>Rp</span>
-                                    <span style="font-size: 28pt"><b>1.000</b></span><br>
-                                    <span><b>{{ $today->subMonth()->format('F Y') }}</b></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <div class="card" style="border-top: 4px solid; border-top-color : rgb(0, 168, 160);">
-                            <div class="card-body">
-                                <div class="judul">
-                                    <span><b>Best Day</b></span>
-                                </div>
-                                <div class="isi">
-                                    <span>Rp</span>
-                                    <span style="font-size: 28pt"><b>1.000</b></span><br>
-                                    <span><b>{{ $today->yesterday()->format('d F Y') }}</b></span>
+                                    <span class="text-muted"><small>{{ $firstMonth }} - {{ $today->today()->format('F Y') }}</small></span>
                                 </div>
                             </div>
                         </div>

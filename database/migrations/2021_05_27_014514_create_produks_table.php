@@ -15,10 +15,10 @@ class CreateProduksTable extends Migration
     {
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('kode_produk');
             $table->string('nama_produk');
-            $table->foreignId('kategori_id');
+            $table->foreignId('kategori_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('harga');
             $table->string('deskripsi');
             $table->string('foto');

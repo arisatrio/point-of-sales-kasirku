@@ -15,8 +15,8 @@ class CreatePenjualansTable extends Migration
     {
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('member_id')->nullable();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('member_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('kode');
             $table->integer('grand_total');
             $table->integer('jumlah_bayar');
