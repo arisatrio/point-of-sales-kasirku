@@ -71,9 +71,9 @@ class ProdukController extends Controller
                 'kode_produk'   => 'required',
                 'nama_produk'   => 'required',
                 'kategori_id'   => 'required',
-                'harga'         => 'required|numeric',
+                'harga'         => 'required|numeric|min:0|not_in:0',
                 'deskripsi'     => 'required',
-                'stok'          => 'required|numeric',
+                'stok'          => 'required|numeric|min:0',
                 'foto'          => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             ]);
 
@@ -87,9 +87,9 @@ class ProdukController extends Controller
                 'kode_produk'   => 'required',
                 'nama_produk'   => 'required',
                 'kategori_id'   => 'required',
-                'harga'         => 'required|numeric',
+                'harga'         => 'required|numeric|min:0|not_in:0',
                 'deskripsi'     => 'required',
-                'stok'          => 'required|numeric'
+                'stok'          => 'required|numeric|min:0'
             ]);
         }
 

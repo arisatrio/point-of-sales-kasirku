@@ -15,7 +15,6 @@ class CreateKategoriUsahaTable extends Migration
     {
         Schema::create('kategori_usaha', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
             $table->string('kategori_usaha');
             $table->timestamps();
         });

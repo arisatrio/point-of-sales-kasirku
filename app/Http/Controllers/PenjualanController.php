@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 use App\Models\Penjualan;
 use App\Models\PenjualanProduk;
+use App\Models\Produk;
 use App\Helpers\Cart;
 
 class PenjualanController extends Controller
@@ -70,6 +72,7 @@ class PenjualanController extends Controller
                     'total'         => $produk[$i]['subtotal']
                 ];
                 PenjualanProduk::insert($insert);
+                Produk::where('id', $produk[$i]['id'])->decrement('stok', $produk[$i]['qty']);
             };
             DB::commit();
 
@@ -86,6 +89,22 @@ class PenjualanController extends Controller
         $produkPenj = PenjualanProduk::with('produk')->where('penjualan_id', $penjualan->id)->get();
 
         return view('penjualan-detail', compact('penjualan', 'produkPenj'));
+    }
+
+    public function cetak($id)
+    {
+        $penjualan = Penjualan::has('user')->with('penjualanProduk')->find($id);
+        $produkPenj = PenjualanProduk::with('produk')->where('penjualan_id', $penjualan->id)->get();
+
+        $pdf = PDF::loadView(
+            'report.penjualan.invoice',
+            [
+                'data_penjualan' => $data_penjualan,
+                'logo' => $logo,
+            ]
+        );
+
+        return $pdf->stream('invoice.pdf');
     }
 
     /**

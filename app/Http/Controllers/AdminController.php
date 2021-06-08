@@ -31,10 +31,6 @@ class AdminController extends Controller
             'password'      => 'required'
         ]);
 
-        // $user = Admin::where('email', $data['email'])->first();
-        // if (!$user || !Hash::check($data['password'], $user->password)) {
-        //     return redirect()->back()->with('messages', "Email atau Password salah.!");
-        // }
         if (Auth::guard('admin')->attempt($data)) {
             return redirect()->route('admin-dashboard');
         };
@@ -109,8 +105,7 @@ class AdminController extends Controller
     public function index_user()
     {
         $user = User::with('kategoriUsaha')->get();
-        $kategoriUsaha      = KategoriUsaha::all();
-        //dd($user);
+        $kategoriUsaha      = KategoriUsaha::get();
 
         return view('admin.user', compact('user', 'kategoriUsaha'));
     }

@@ -127,7 +127,7 @@
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->kategori->kategori }}</td>
                                     <td>Rp{{ number_format($item->harga) }}</td>
-                                    <td>{{ $item->stok }}</td>
+                                    <td @if($item->stok <= 0) class="bg-danger" @endif>{{ $item->stok }}</td>
                                     <td>
                                         <a href="{{ route('produk-edit', $item->id) }}"><i class="text-muted fas fa-pencil-alt ml-2 mr-3"></i></a>
                                         <button>

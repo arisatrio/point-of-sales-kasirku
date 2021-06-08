@@ -18,7 +18,7 @@ class ProdukClick extends Component
 
     public function render()
     {
-        $produk = Produk::has('user', auth()->user()->id)->paginate(15);
+        $produk = Produk::has('user', auth()->user()->id)->where('stok', '>', 0)->paginate(15);
 
         return view('livewire.produk-click', compact('produk'));
     }

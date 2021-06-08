@@ -51,11 +51,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/pegawai/post', [App\Http\Controllers\PegawaiController::class, 'store'])->name('pegawai-store');
 });
 
-
+Route::get('/pegawai/login', [App\Http\Controllers\PegawaiController::class, 'login'])->name('pegawai-login');
+Route::group(['middleware' => 'auth:pegawai'], function () {
+    Route::post('/pegawai/login/post', [App\Http\Controllers\PegawaiController::class, 'loginPost'])->name('pegawai-login-post');
+    //Route::get('/transaksi', [App\Http\Controllers\PegawaiController::class, 'transaksi'])->name('pegawai-transaksi');
+});
 
 Route::get('/admin/login', [App\Http\Controllers\AdminController::class, 'login'])->name('admin-login');
 Route::post('/admin/login/post', [App\Http\Controllers\AdminController::class, 'loginPost'])->name('admin-login-post');
-
 Route::group(['middleware' => 'auth:web,admin'], function () {
     Route::get('/admin/logout', [App\Http\Controllers\AdminController::class, 'logout'])->name('admin-logout');
     //KATEGORI

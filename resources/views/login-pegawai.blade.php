@@ -12,13 +12,15 @@
             </div>
         @endif
 
-        <form method="POST" action="{{ route('login') }}">
+        <form method="POST" action="{{ route('pegawai-login') }}">
             @csrf
 
             <div class="text-center m-4">
                 <img class="mb-3 center-block" src="{{ asset('img/logo.png') }}" />
                 <hr>
             </div>
+
+            <h3 class="text-center">LOGIN PEGAWAI</h3>
 
             <div>
                 <x-jet-label for="email" value="{{ __('Email') }}" />
@@ -30,20 +32,7 @@
                 <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
             </div>
 
-            <div class="mt-4">
-                <a class="text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
-                    {{ __('Register') }}
-                </a>
-            </div>
-
-
             <div class="flex items-center justify-end mt-4">
-                <x-jet-button >
-                    <a href="{{ route('pegawai-login') }}" class="text-white">
-                        {{ __('Login sebagai pegawai') }}
-                    </a>
-                </x-jet-button>
-
                 <x-jet-button class="ml-4">
                     {{ __('Log in') }}
                 </x-jet-button>

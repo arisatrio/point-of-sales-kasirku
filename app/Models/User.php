@@ -34,7 +34,7 @@ class User extends Authenticatable
 
     public function kategoriUsaha()
     {
-        return $this->hasOne('App\Models\KategoriUsaha', 'id');
+        return $this->belongsTo('App\Models\KategoriUsaha');
     }
 
     public function produk()

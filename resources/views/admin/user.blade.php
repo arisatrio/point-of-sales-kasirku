@@ -43,6 +43,7 @@
                         </a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('admin-kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori Usaha</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('admin-user') }}"><i class="fas fa-users mr-2"></i>User</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3 text-danger" href="{{ route('admin-logout') }}">LOGOUT</a>
                     </div>
                 </div>
                 <div id="page-content-wrapper" class="bg-light">
@@ -120,7 +121,7 @@
                                                                 <select class="form-control" name="jenis_usaha" autocomplete="jenis_usaha">
                                                                     <option disabled>--Pilih Jenis Usaha--</option>
                                                                     @foreach ($kategoriUsaha as $item)
-                                                                    <option value="{{ $item->id }}">{{ $item->kategori_usaha }}</option>
+                                                                    <option value="{{ $item->kategori_usaha }}">{{ $item->kategori_usaha }}</option>
                                                                     @endforeach
                                                                 </select>
                                                             </div>
@@ -176,7 +177,7 @@
                                                             <td>{{ $no++ }}</td>
                                                             <td>{{ $item->name }}</td>
                                                             <td>{{ $item->email }}</td>
-                                                            <td>@if($item->kategori_usaha == null) deleted @endif {{ $item->kategori_usaha }}</td>
+                                                            <td>@if($item->jenis_usaha == null) deleted @endif {{ $item->jenis_usaha }}</td>
                                                             <td>
                                                                 <button>
                                                                     <form method="POST" action="{{ route('admin-kategori-delete', $item->id) }}">

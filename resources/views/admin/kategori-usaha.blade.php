@@ -43,6 +43,7 @@
                         </a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('admin-kategori') }}"><i class="fas fa-folder mr-2"></i>Kategori Usaha</a>
                         <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ route('admin-user') }}"><i class="fas fa-users mr-2"></i>User</a>
+                        <a class="list-group-item list-group-item-action list-group-item-light p-3 text-danger" href="{{ route('admin-logout') }}">LOGOUT</a>
                     </div>
                 </div>
                 <div id="page-content-wrapper" class="bg-light">

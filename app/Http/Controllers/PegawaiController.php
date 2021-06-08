@@ -4,12 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Pegawai;
 
 class PegawaiController extends Controller
 {
+    public function login()
+    {
+        return view('login-pegawai');
+    }
+    public function loginPost(Request $request)
+    {
+        $data = $request->validate([
+            'email'         => 'required',
+            'password'      => 'required'
+        ]);
+
+        if (Auth::guard('pegawai')->attempt($data)) {
+            return redirect()->route('pegawai-transaksi');
+        };
+        return redirect()->back()->with('messages', "Email atau Password salah.!");
+    }
+
     public function index()
     {
         $id = $this->get_id_pegawai();
